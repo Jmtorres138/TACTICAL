@@ -11,7 +11,7 @@
 #' @param tissue_threshold Dataframe of tissue scores for each SNP (output from calculate_tissue_vectors function)
 #' @param shared_threshold Dataframe of tissue scores for each SNP (output from calculate_tissue_vectors function)
 #' @export
-tissue_classifer <- function(toa.df,tissue_threshold=0.2,shared_threshold=0.1){
+tissue_classifier <- function(toa.df,tissue_threshold=0.2,shared_threshold=0.1){
   pb <- txtProgressBar(min=1,max=dim(toa.df)[1],style=3)
   out.df <- c()
   for (i in 1:dim(toa.df)[1]){
