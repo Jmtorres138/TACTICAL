@@ -14,6 +14,52 @@ knitr::opts_chunk$set(
 )
 ```
 
+
+This is a tutorial for the R package TACTICAL ("Tissue of ACTion scores for Investigating Complex trait Associations at Loci"). 
+
+
+## Setting up 
+
 ```{r setup}
-library(TACTICAL )
+
+library("TACTICAL")
+
+```
+
+## Input files 
+
+## Step 1: Annotating GWAS associations or fine-mapped bayesian credible sets 
+
+Pass
+
+```{r step1}
+
+```
+
+
+## Step 2: Calculating tissue score vectors for each SNP 
+
+Pass
+
+```{r step2}
+
+```
+
+
+## Step 3: Calculating tissue of action (TOA) scores for each genetic signal (i.e. independent GWAS association or credible set)
+
+Pass
+
+```{r step3}
+
+```
+
+
+## Step 4 (Optional): Apply a rule-based classier to assign signals to tissue and/or cell types 
+
+Pass
+
+
+```{r step4}
+
 ```
