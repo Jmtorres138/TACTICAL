@@ -34,7 +34,7 @@ annotate_snps <- function(snp_file,tissue_path_file,tissue_annotation_file,
       count <- count + 1
       aname <- tissue%&%"."%&%a
       sub.df <- dplyr::filter(bed.df,V4==a)
-      annot.gr <- GenomicRanges::GRanges(seqnames=sub.df$V1,IRanges::IRanges(start=sub.df$V2,end=sub.df$V3))
+      annot.gr <- GenomicRanges::GRanges(seqnames=sub.df$V1,IRanges::IRanges(start=sub.df$V2+1,end=sub.df$V3+1)) 
       eval.vec <- (snp.gr %over% annot.gr) %>% as.integer(.)
       out.df <- cbind(out.df,eval.vec)
       names(out.df)[dim(out.df)[2]] <- aname
@@ -47,7 +47,7 @@ annotate_snps <- function(snp_file,tissue_path_file,tissue_annotation_file,
     for (a in unique(gen.annot.df$V1)){
       count <- count + 1
       sub.df <- dplyr::filter(bed.df,V4==a)
-      annot.gr <- GenomicRanges::GRanges(seqnames=sub.df$V1,IRanges::IRanges(start=sub.df$V2,end=sub.df$V3))
+      annot.gr <- GenomicRanges::GRanges(seqnames=sub.df$V1,IRanges::IRanges(start=sub.df$V2+1,end=sub.df$V3+1))
       eval.vec <- (snp.gr %over% annot.gr) %>% as.integer(.)
       out.df <- cbind(out.df,eval.vec)
       names(out.df)[dim(out.df)[2]] <- gannot

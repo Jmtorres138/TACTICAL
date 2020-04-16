@@ -3,4 +3,4 @@
 export(annotate_snps)
 export(calculate_tissue_vectors)
 export(calculate_toa_scores)
-export(tissue_classifer)
+export(tissue_classifier)
