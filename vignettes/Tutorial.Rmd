@@ -1,12 +1,13 @@
 ---
 title: "TACTICAL tutorial"
 author: "Jason M. Torres"
-date: "April 10, 2020"
+date: "April 16, 2020"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Tutorial}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: library.bib
 ---
 
 ```{r, include = FALSE}
@@ -22,7 +23,25 @@ This is a tutorial for the R package **TACTICAL** ("Tissue of ACTion scores for 
 
 ## Suggested usage 
 
-PASS
+TACTICAL provides a simple way to systematically integrate genetic information from trait-associated loci with functional genomic annotations and gene expression to obtain *tissue-of-action* (TOA) scores. These scores can be used to:
+
+* classify signals to most likely tissues of action. 
+* prioritise genetic signals for experimental validation in a particular cell or tissue type.
+* guide the identification of causal gene(s) - at specific loci - by informing which tissue(s) are most appropriate for analyses such as eQTL colocalisation or integration with chromatin conformation capture (3C) approaches.
+* inform *process-specific* polygenic risk scores. 
+
+TACTICAL is simple to run and flexible; you need only provide the input data you are interested in evaluating. The data accepted include: 
+
+* `Genetic information`: Credible sets from bayesian fine-mapping or index variants from GWAS. If using index SNPs, we recommended using conditionally independent SNPs or LD-pruned SNPs. 
+* `Genomic annotations`: Any type of interval data that can be formatted in a BED file. This can include chromatin segmentation states, ChIP-seq peaks, chromatin accessible regions (i.e. DHS or ATAC-seq peaks), lowly/highly methylated regions, coding sequence, untranslated regions, etc.
+* `Expression specificity scores`: When comparing across a set of tissues or cell types, you can provide expression specificity scores (described below) that inform the extent of tissue-specific gene expression in each evaluated tissue. 
+
+Although there are many possible data combinations the user may wish to explore, we offer a few suggestions: 
+
+1. As some annotations are more enriched for genome-wide significant SNPs (or SNP heritability), you may consider explicitly using these enrichment values as weights within TACTICAL. Although this package does not estimate enrichment *per se*, there are many software programs available that do, such as [fgwas](https://github.com/joepickrell/fgwas), [GARFIELD](https://www.bioconductor.org/packages/release/bioc/html/garfield.html), and [GoShifter](https://github.com/immunogenomics/goshifter).
+2. If you are interested in prioritising genetic signals within a particular tissue, then we suggest using as many relevant annotations as available (i.e. from a variety of molecular assays); though you may not want to include "repressed" or low-signal annotations in your tissue or cell-type of interest. 
+3. On the other hand, if you are interested in profiling signals across a range of candidate tissues, then we strongly recommend restricting the provided annotations to those are available for all evaluated tissues. For example, you may not want to use ATAC-seq peaks if they are only available for a subset of tissues.  
+
 
 ## Getting started 
 
@@ -69,7 +88,7 @@ This text file contains the SNP-level genetic association information and must i
 * **`VALUE`**: When using fine-mapped credible sets, this value corresponds to the posterior probability of association (PPA) for each credible SNP. When using (conditionally independent) GWAS index variants, this value must be set to 1. 
 
 
-For this tutorial, we will use the file `credible-input.txt` that includes 99% credible sets from a European GWAS meta-analysis of type 2 diabetes from Mahajan et al. *Nat. Genet.* 2018b. This file contains all credible SNPs for the 101 99% credible sets with maximum credible set PPA $\geq$ 0.5. The complete dataset can be downloaded from the DIAGRAM website. 
+For this tutorial, we will use the file `credible-input.txt` that includes 99% credible sets from a European GWAS meta-analysis of type 2 diabetes [@Mahajan2018a]. This file contains all credible SNPs for the 101 99% credible sets with maximum credible set PPA $\geq$ 0.5. The complete dataset can be downloaded from the DIAGRAM [website](https://diagram-consortium.org/downloads.html). 
 
 ```
 SIGNAL    SNPID           CHR       POS         VALUE
@@ -91,7 +110,7 @@ Note the convention used to designate credible sets in the `SIGNAL` column, wher
 
 This text file contains two columns and does not include a header. The first column lists the names of the tissue and/or cell types with functional genomic annotations that will be integrated with GWAS information. It is important the the same character strings used in this column are also included in the tissue annotation file. The second column lists the complete paths the BED files that correspond to each tissue. 
 
-For this tutorial, we will incorporate chromatin state annotations for four diabetes relevant tissues that have been previously delineated by the Parker laboratory (Varshney et al. _PNAS_. 2017). The complete set of annotations can be downloaded here (LINK TO PARKER LAB). 
+For this tutorial, we will incorporate chromatin state annotations for four diabetes relevant tissues that have been previously delineated by the Parker laboratory [@Varshney2017]. The complete set of annotations can be downloaded [here](https://theparkerlab.med.umich.edu/data/papers/doi/10.1073/pnas.1621192114/). 
 
 ```
 liver     Liver.chromatinStates.bed
@@ -114,13 +133,13 @@ chr1  567400  567800  2_Weak_TSS
 ...   ...     ...     ...
 ```
 
-BED files for genomic annotations corresponding to chromatin activity (e.g. ChIP-seq on histone PTMs, chromatin states), chromatin accessibility (e.g. DHS sites and ATAC-seq), and transcription factor binding sites (e.g. ChIP-seq) can be obtained from the ENCODE Project (URL) or Roadmap Epigenome Project (URL).
+BED files for genomic annotations corresponding to chromatin activity (e.g. ChIP-seq on histone PTMs, chromatin states), chromatin accessibility (e.g. DHS sites and ATAC-seq), and transcription factor binding sites (e.g. ChIP-seq) can be obtained from the [ENCODE Project](https://www.encodeproject.org/) or [Roadmap Epigenomics Project](http://www.roadmapepigenomics.org/).
 
 
 
 **Tissue annotation file** 
 
-This text file indicates how each tissue-level annotation should be handled when obtaining tissue score vectors for each SNP. It contains three columns and no header. The first column lists the tissue or cell type, the second column lists in the annotation name, and the third column lists the annotation weight. We have previoulsy used genome-wide fold enrichments for trait-associated variants, obtained from the program `fgwas` (URL), to weight the relative importance of each tissue-level annotation. 
+This text file indicates how each tissue-level annotation should be handled when obtaining tissue score vectors for each SNP. It contains three columns and no header. The first column lists the tissue or cell type, the second column lists in the annotation name, and the third column lists the annotation weight. We have previoulsy used genome-wide fold enrichments for trait-associated variants, obtained from the program `fgwas`, to weight the relative importance of each tissue-level annotation. 
 
 ```
 liver   1_Active_TSS          6.76
@@ -132,7 +151,7 @@ muscle  9_Active_enhancer_1   2.07
 ...     ...                   ...
 ```
 
-There are several programs available that can provide genome-wide enrichment values for genomic annotations, such as [`fgwas`](URL) and [`GARFIELD`](URL).
+There are several programs available that can provide genome-wide enrichment values for genomic annotations, such as [fgwas](https://github.com/joepickrell/fgwas) and [GARFIELD](https://www.bioconductor.org/packages/release/bioc/html/garfield.html).
 
 In order to perform an _unweighted_ anlysis that handles each tissue-level annotation equally, simply set the third column value to 1. 
 
@@ -163,7 +182,7 @@ Although the genomic annotations in the genomic annotation file may not vary acr
 
 $$ \varepsilon_{g,t}  = \frac{{\rm med}({\rm expression}_{g,t})}{\sum_{x\in T} {\rm med}({\rm expression}_{g,x})} $$   
 
-where ${\rm med}({\rm expression}_{g,t})$ is the median expression of gene $g$ in tissue $t$ and $T$ is the set of tissues evaluated in the tissue annotation file. These values range from zero to one, where zero indicates that gene $g$ is not expressed in $t$, whereas one indicates that gene $g$ is only expressed in tissue $t$, relative to the other evaluated tissues. 
+where ${\rm med}({\rm expression}_{g,t})$ is the median expression of gene $g$ in tissue $t$ and $T$ is the set of tissues evaluated in the tissue annotation file. These values range from zero to one, where zero indicates that gene $g$ is not expressed in tissue $t$, whereas one indicates that gene $g$ is only expressed in tissue $t$, relative to the other evaluated tissues. 
 
 The input text file contains columns of expression specificity scores corresponding to each evaluated tissue, and are accordingly named (the tissue names must be the same as those provided in the tissue annotation file). The first five columns are `FEATURE_ID`, `FEATURE_NAME`, `CHR`, `START`, and `END` as shown in the provided sample file:  
 
@@ -224,10 +243,10 @@ data.directory <- system.file("extdata",package="TACTICAL")
 setwd(data.directory)
 
 tvec.df <- calculate_tissue_vectors(snp.annotated.df = snp.df,
-                                     tissue_annotation_file = "tissue-annotations.txt", 
-                                     genomic_annotation_file = "genomic-annotations.txt",
-                                     ess.annot = "coding",
-                                     ess.file = "gene-expression-specificity-scores.txt")
+                                    tissue_annotation_file = "tissue-annotations.txt", 
+                                    genomic_annotation_file = "genomic-annotations.txt",
+                                    ess.annot = "coding",
+                                    ess.file = "gene-expression-specificity-scores.txt")
 ```
 
 
@@ -283,7 +302,7 @@ classified.df[1:5,]
 We are now able to further analyse the TOA scores and profile genetic signals. For example, we can perform a principal components anlaysis on the set of classified signals (86/101) using the following code: 
 
 
-```{r, fig.width=7,fig.height=7}
+```{r, fig.width=7,fig.height=4.5}
 library("ggplot2")
 library("gridExtra")
 
@@ -293,17 +312,19 @@ pca.df$classification <- classified.df$classification
 
 pltA <- ggplot(data=dplyr::filter(pca.df,classification!="unclassified"),
                        aes(x=PC1,y=PC2,fill=classification)) + 
-              geom_point(shape=21,alpha=0.8,color="black",size=2) +
-              scale_fill_brewer(palette = "Set1",name="Assigned Tissue") + 
-              theme_classic()
+               geom_point(shape=21,alpha=0.8,color="black",size=2) +
+               scale_fill_brewer(palette = "Set1",name="Assigned Tissue") + 
+               theme_classic()
 
 pltB <- ggplot(data=dplyr::filter(pca.df,classification!="unclassified"),
                        aes(x=PC2,y=PC3,fill=classification)) + 
-              geom_point(shape=21,alpha=0.8,color="black",size=2) + 
-              scale_fill_brewer(palette = "Set1",name="Assigned Tissue") + 
-              theme_classic()
+               geom_point(shape=21,alpha=0.8,color="black",size=2) + 
+               scale_fill_brewer(palette = "Set1",name="Assigned Tissue") + 
+               theme_classic()
 
 grid.arrange(pltA,pltB,nrow=2)
 
 ```
+
+### References 
 
