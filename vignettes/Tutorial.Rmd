@@ -67,7 +67,7 @@ devtools::install_github("jmtorres138/TACTICAL")
 
 We can then load the `TACTICAL` package within an R session: 
 
-```{r install}
+```{r library}
 library("TACTICAL")
 ```
 
