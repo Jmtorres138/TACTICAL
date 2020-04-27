@@ -61,7 +61,7 @@ The package was developed in R (version 3.6.0) and requires the following R pack
 
 The package can be directly installed from [GitHub](https://github.com/Jmtorres138/TACTICAL) using this R command: 
 
-```
+```{r install}
 devtools::install_github("jmtorres138/TACTICAL")
 ```
 
