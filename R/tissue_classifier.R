@@ -29,8 +29,8 @@ tissue_classifier <- function(toa.df,tissue_threshold=0.2,shared_threshold=0.1){
     } else{
         shared.limit <- max(keep.scores) - shared_threshold
         shared.limit <- max(c(shared.limit,0))
-        final.scores <- keep.scores[keep.scores >= shared.limit]
-        final.names <- keep.names[keep.scores >= shared.limit]
+        final.scores <- tiss.scores[tiss.scores >= shared.limit]
+        final.names <- tiss.names[tiss.scores >= shared.limit]
       if (length(final.scores)==1){
         classification <- final.names
         tissues <- final.names
