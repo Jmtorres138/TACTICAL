@@ -18,18 +18,19 @@ tissue_classifier <- function(toa.df,tissue_threshold=0.2,shared_threshold=0.1){
   out.df <- c()
   for (i in 1:dim(toa.df)[1]){
     row.df <- toa.df[i,]
-    tiss.scores <- row.df %>% dplyr::select(.,-one_of("SIGNAL","unclassified")) %>%
-      sort(.,decreasing = TRUE)
+    tiss.scores <- row.df %>% dplyr::select(., -one_of("SIGNAL", "unclassified")) %>% sort(., decreasing = TRUE)
     tiss.names <- names(tiss.scores)
+    tiss.scores <- tiss.scores %>% as.numeric(.)
     keep.scores <- tiss.scores[tiss.scores > tissue_threshold]
     keep.names <- tiss.names[tiss.scores > tissue_threshold]
     if (length(keep.scores)==0){
       classification <- "unclassified"
       tissues <- "unknown"
     } else{
-      shared.limit <- max(keep.scores) - shared_threshold
-      final.scores <- keep.scores[keep.scores > shared.limit]
-      final.names <- keep.names[keep.scores > shared.limit]
+        shared.limit <- max(keep.scores) - shared_threshold
+        shared.limit <- max(c(shared.limit,0))
+        final.scores <- keep.scores[keep.scores >= shared.limit]
+        final.names <- keep.names[keep.scores >= shared.limit]
       if (length(final.scores)==1){
         classification <- final.names
         tissues <- final.names
