@@ -1,4 +1,4 @@
-# TACTICAL: Tissue of ACTion scores for Investigating Complex trait Associations at Loci 
+# TACTICAL: Tissue of ACTion scores for Investigating Complex trait-Associated Loci 
 
 This package takes genetic associations or fine-mapped genetic credible sets and systemically integrates them with functional annotations to obtain *tissue of action* (TOA) scores that can guide mechanistic investigation of genetic signals from genome-wide association studies.  
 
