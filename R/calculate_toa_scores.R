@@ -17,9 +17,10 @@ calculate_toa_scores <- function(snp.tissvec.df){
     sig.df <- dplyr::filter(snp.tissvec.df,SIGNAL==sig)
     cumsum <- sig.df$VALUE %>% sum(.)
     tiss.matrix <- dplyr::select(sig.df,-one_of("SIGNAL","SNPID","CHR","POS","VALUE")) %>% as.matrix(.)
-    accounted.value <- colSums(tiss.matrix) %>% sum(.)
+    ppa.vec <- sig.df$VALUE
+    accounted.value <- colSums(ppa.vec * tiss.matrix) %>% sum(.)
     unclassified.score <- (cumsum - accounted.value) %>% round(.,digits=4)
-    sum.df <- colSums(tiss.matrix) %>% round(.,digits=4) %>% t(.) %>% as.data.frame(.)
+    sum.df <- colSums(ppa.vec * tiss.matrix) %>% round(.,digits=4) %>% t(.) %>% as.data.frame(.)
     sum.df$unclassified <- unclassified.score
     build.df <- data.frame("SIGNAL"=sig,stringsAsFactors = F) %>% cbind(.,sum.df)
     out.df <- rbind(out.df,build.df)
