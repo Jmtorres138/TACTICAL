@@ -102,8 +102,8 @@ calculate_tissue_vectors <- function(snp.annotated.df,tissue_annotation_file,gen
       tiss.wgts <- rep(0,length(tiss.vec))
       names(tiss.wgts) <- tiss.vec
     }
-    # Obtain tissue scores for SNP by partitioning PPA value
-    tiss.vector <- full.row.df$VALUE * tiss.wgts
+    # Output tissue scores 
+    tiss.vector <- tiss.wgts
     sub.df <- dplyr::select(full.row.df,one_of("SIGNAL","SNPID","CHR","POS","VALUE"))
     build.df <- cbind(sub.df,(as.data.frame(tiss.vector) %>% t(.)))
     out.df <- rbind(out.df,build.df)
