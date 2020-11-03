@@ -366,7 +366,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h3>Installation</h3>
 <p>The package can be directly installed from <a href="https://github.com/Jmtorres138/TACTICAL">GitHub</a> using this R command:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;jmtorres138/TACTICAL&quot;</span>)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="co">#&gt; Skipping install of &#39;TACTICAL&#39; from a github remote, the SHA1 (1026012b) has not changed since last install.</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co">#&gt; Skipping install of &#39;TACTICAL&#39; from a github remote, the SHA1 (27ceeb06) has not changed since last install.</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="co">#&gt;   Use `force = TRUE` to force installation</span></span></code></pre></div>
 <p>We can then load the <code>TACTICAL</code> package within an R session:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(<span class="st">&quot;TACTICAL&quot;</span>)</span></code></pre></div>
@@ -513,7 +513,7 @@ Gene3       NRARP         chr9  140196036 140196380 0.521   0.056   0.368     0.
 </div>
 <div id="step-3-calculating-tissue-of-action-toa-scores-for-each-genetic-signal-i.e.-independent-gwas-association-or-credible-set" class="section level2">
 <h2>Step 3: Calculating tissue of action (TOA) scores for each genetic signal (i.e. independent GWAS association or credible set)</h2>
-<p>We will now take the dataframe outputted from the <code>calculate_toa_scores</code> function and input it into the <code>calculate_toa_scores</code> function to obtain <em>tissue of action</em> (TOA) scores for each genetic signal (i.e. credible set when evaluating fine-mapped loci):</p>
+<p>We will now take the dataframe outputted from the <code>calculate_tissue_vectors</code> function and input it into the <code>calculate_toa_scores</code> function to obtain <em>tissue of action</em> (TOA) scores for each genetic signal (i.e. credible set when evaluating fine-mapped loci):</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>tscores.df &lt;-<span class="st"> </span><span class="kw">calculate_toa_scores</span>(<span class="dt">snp.tissvec.df =</span> tvec.df)</span></code></pre></div>
 <p>The output of this function is another dataframe where each row corresponds to a genetic signal and contains columns indicate the TOA scores for each evaluated tissue:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">dim</span>(tscores.df)</span>

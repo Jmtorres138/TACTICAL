@@ -2,7 +2,7 @@
 title: "TACTICAL tutorial"
 author: "Jason M. Torres"
 date: "April 16, 2020"
-output: rmarkdown::html_vignette
+output: rmarkdown::html_vignette 
 vignette: >
   %\VignetteIndexEntry{Tutorial}
   %\VignetteEngine{knitr::rmarkdown}
@@ -260,7 +260,7 @@ tvec.df[1:5,]
 
 ## Step 3: Calculating tissue of action (TOA) scores for each genetic signal (i.e. independent GWAS association or credible set)
 
-We will now take the dataframe outputted from the `calculate_toa_scores` function and input it into the `calculate_toa_scores` function to obtain _tissue of action_ (TOA) scores for each genetic signal (i.e. credible set when evaluating fine-mapped loci):
+We will now take the dataframe outputted from the `calculate_tissue_vectors` function and input it into the `calculate_toa_scores` function to obtain _tissue of action_ (TOA) scores for each genetic signal (i.e. credible set when evaluating fine-mapped loci):
 
 ```{r step3, results = 'hide'}
 tscores.df <- calculate_toa_scores(snp.tissvec.df = tvec.df)
