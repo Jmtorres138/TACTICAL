@@ -14,7 +14,9 @@
 tissue_classifier <- function(toa.df,tissue_threshold=0.2,shared_threshold=0.1){
   "%&%" <- function(a,b) paste0(a,b) # just a shortcut for the paste function
   '%>%' <- magrittr::'%>%'
-  pb <- txtProgressBar(min=1,max=dim(toa.df)[1],style=3)
+  if (dim(toa.df)[1]>1){ # in case only one genetic signal is profiled 
+    pb <- txtProgressBar(min=1,max=dim(toa.df)[1],style=3)    
+  }
   out.df <- c()
   for (i in 1:dim(toa.df)[1]){
     row.df <- toa.df[i,]
@@ -42,7 +44,9 @@ tissue_classifier <- function(toa.df,tissue_threshold=0.2,shared_threshold=0.1){
     build.df <- data.frame("SIGNAL"=row.df$SIGNAL,"classification"=classification,
                            "tissues"=tissues,stringsAsFactors = F)
     out.df <- rbind(out.df,build.df)
-    setTxtProgressBar(pb,i)
+    if (dim(toa.df)[1]>1){
+      setTxtProgressBar(pb,i)
+    }
   }
   return(out.df)
 }
