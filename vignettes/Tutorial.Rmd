@@ -299,7 +299,7 @@ classified.df[1:5,]
 
 ## Principal components analysis (PCA) 
 
-We are now able to further analyse the TOA scores and profile genetic signals. For example, we can perform a principal components anlaysis on the set of classified signals (86/101) using the following code: 
+We are now able to further analyse the TOA scores and profile genetic signals. For example, we can perform a principal components analysis on the set of classified signals (86/101) using the following code: 
 
 
 ```{r, fig.width=7,fig.height=4.5}
